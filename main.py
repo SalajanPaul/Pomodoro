@@ -7,6 +7,7 @@ import time
 class Pomodoro:
     def __init__(self, root):
         self.root = root
+        self.timer_running = False
 
     def work_break(self, timer):
         minutes, seconds = divmod(timer, 60)
@@ -21,7 +22,7 @@ class Pomodoro:
             pomo.work_break(timer)
             if timer == 0:
 
-                playsound("")
+                playsound("sound/start.wav")
                 messagebox.showinfo("Good Job", "Take a break, \nClick Break Button")
 
             timer -= 1
@@ -32,7 +33,7 @@ class Pomodoro:
             pomo.work_break(timer)
             if timer == 0:
 
-                playsound("")
+                playsound("sound/start.wav")
                 messagebox.showinfo("Times Up", "Get back to work, \nClick Work Button")
 
             timer -= 1
@@ -48,7 +49,7 @@ class Pomodoro:
         self.sec = tk.StringVar(self.root)
         self.sec.set("00")
 
-        self.min_label = tk.Label(self.root, textvariable=self.sec, font=("arial", 22, "bold"), bg="red", fg="black")
+        self.min_label = tk.Label(self.root, textvariable=self.min, font=("arial", 22, "bold"), bg="red", fg="black")
         self.min_label.pack()
 
         self.sec_label = tk.Label(self.root, textvariable=self.sec, font=("arial", 22, "bold"), bg="black", fg="white")
@@ -56,12 +57,16 @@ class Pomodoro:
 
         canvas = tk.Canvas(self.root)
         canvas.pack(expand=True, fill="both")
-        img = Image.open("")
-        bg = ImageTk.PhotoImage(img)
+        img = Image.open("background/darth-vader.jpg")
+
+        new_size = (280, 255)
+        resize_img = img.resize(new_size)
+        resize_img.save("resized_darth_vader.jpg")
+
+        bg = ImageTk.PhotoImage(resize_img)
         canvas.create_image(90, 10, image=bg, anchor="nw")
 
         btn_work = tk.Button(self.root, text="Start", bd=5, command=self.work, bg="red", font=("arial", 15, "bold")).place(x=140, y=380)
-
         btn_break = tk.Button(self.root, text="Break", bd=5, command=self.break_, bg="red", font=("arial", 15, "bold")).place(x=240, y=380)
 
         self.root.mainloop()
